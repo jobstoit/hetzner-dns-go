@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/jobstoit/hcloud-dns-go/dns/schema"
+	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
 
 type ZoneStatus string

@@ -9,7 +9,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/jobstoit/hcloud-dns-go/dns/schema"
+	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
 
 // PrimaryServer represents a primary server in the Hetzner DNS API.

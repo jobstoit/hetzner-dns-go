@@ -9,27 +9,27 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/jobstoit/hcloud-dns-go/dns/schema"
+	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
 
 type RecordType string
 
 const (
-	RecordTypeA     = "A"
-	RecordTypeAAAA  = "AAAA"
-	RecordTypePTR   = "PTR"
-	RecordTypeNS    = "NS"
-	RecordTypeMX    = "MX"
-	RecordTypeCNAME = "CNAME"
-	RecordTypeRP    = "RP"
-	RecordTypeTXT   = "TXT"
-	RecordTypeSOA   = "SOA"
-	RecordTypeHINFO = "HINFO"
-	RecordTypeSRV   = "SRV"
-	RecordTypeDANE  = "DANE"
-	RecordTypeTLSA  = "TLSA"
-	RecordTypeDS    = "DS"
-	RecordTypeCAA   = "CAA"
+	RecordTypeA     RecordType = "A"
+	RecordTypeAAAA  RecordType = "AAAA"
+	RecordTypePTR   RecordType = "PTR"
+	RecordTypeNS    RecordType = "NS"
+	RecordTypeMX    RecordType = "MX"
+	RecordTypeCNAME RecordType = "CNAME"
+	RecordTypeRP    RecordType = "RP"
+	RecordTypeTXT   RecordType = "TXT"
+	RecordTypeSOA   RecordType = "SOA"
+	RecordTypeHINFO RecordType = "HINFO"
+	RecordTypeSRV   RecordType = "SRV"
+	RecordTypeDANE  RecordType = "DANE"
+	RecordTypeTLSA  RecordType = "TLSA"
+	RecordTypeDS    RecordType = "DS"
+	RecordTypeCAA   RecordType = "CAA"
 )
 
 // Record represents a record in the Hetzner DNS.

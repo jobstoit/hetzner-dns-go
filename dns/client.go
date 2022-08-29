@@ -10,11 +10,14 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"regexp"
 	"strconv"
 	"strings"
 
-	"github.com/jobstoit/hcloud-dns-go/dns/schema"
+	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
+
+var validTokenReg = regexp.MustCompile("[a-zA-Z0-9]{32}")
 
 // Client is the client for the Hetzner DNS API.
 type Client struct {
@@ -39,6 +42,7 @@ type ClientOption func(*Client)
 func WithToken(token string) ClientOption {
 	return func(client *Client) {
 		client.token = token
+		client.tokenValid = validTokenReg.MatchString(token)
 	}
 }
 
@@ -78,6 +82,7 @@ func NewClient(options ...ClientOption) *Client {
 	client := &Client{
 		endpoint:   Endpoint,
 		tokenValid: true,
+		httpClient: http.DefaultClient,
 	}
 
 	for _, option := range options {
@@ -174,11 +179,11 @@ func (c *Client) Do(r *http.Request, v interface{}) (*Response, error) {
 	}
 
 	if err = response.readMeta(body); err != nil {
-		return response, fmt.Errorf("hcloud-dns: error reading response meta data: %s", err)
+		return response, fmt.Errorf("hetzner-dns: error reading response meta data: %s", err)
 	}
 
 	if resp.StatusCode >= 400 && resp.StatusCode <= 599 {
-		err = fmt.Errorf("hcloud-dns: server responded with status code %d", resp.StatusCode)
+		err = fmt.Errorf("hetzner-dns: server responded with status code %d", resp.StatusCode)
 		return response, err
 	}
 	if v != nil {

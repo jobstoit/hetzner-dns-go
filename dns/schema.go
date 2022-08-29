@@ -1,6 +1,6 @@
 package dns
 
-import "github.com/jobstoit/hcloud-dns-go/dns/schema"
+import "github.com/jobstoit/hetzner-dns-go/dns/schema"
 
 // ZoneFromSchema converts schema.Zone to a Zone.
 func ZoneFromSchema(s schema.Zone) *Zone {
