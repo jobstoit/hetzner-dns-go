@@ -7,13 +7,11 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	"github.com/gorilla/mux"
 )
 
 type testEnv struct {
 	Server *httptest.Server
-	Mux    *mux.Router
+	Mux    *http.ServeMux
 	Client *Client
 }
 
@@ -25,7 +23,7 @@ func (env *testEnv) Teardown() {
 }
 
 func newTestEnv() testEnv {
-	mux := mux.NewRouter()
+	mux := http.NewServeMux()
 	server := httptest.NewServer(mux)
 	client := NewClient(
 		WithEndpoint(server.URL),
