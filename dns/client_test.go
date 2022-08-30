@@ -31,6 +31,7 @@ func newTestEnv() testEnv {
 	client := NewClient(
 		WithEndpoint(server.URL),
 		WithToken("32CharactersTokenxxxxxxxXxxxxxxx"),
+		WithApplication("testing", Version),
 	)
 	return testEnv{
 		Server:  server,
