@@ -94,7 +94,7 @@ func (c RecordClient) GetByID(ctx context.Context, id string) (*Record, *Respons
 	var body schema.RecordResponse
 	resp, err := c.client.Do(req, &body)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 
 	return RecordFromSchema(body.Record), resp, nil
@@ -195,7 +195,7 @@ func (c RecordClient) Update(ctx context.Context, rec *Record, opts RecordUpdate
 	reqBody.Ttl = opts.Ttl
 	reqBody.Type = string(opts.Type)
 	reqBody.Value = opts.Value
-	reqBody.ZoneID = rec.Zone.ID
+	reqBody.ZoneID = opts.Zone.ID
 
 	reqBodyData, err := json.Marshal(reqBody)
 	if err != nil {

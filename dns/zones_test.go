@@ -2,7 +2,6 @@ package dns
 
 import (
 	"bytes"
-	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -37,9 +36,8 @@ func TestZoneList(t *testing.T) {
 		json.NewEncoder(w).Encode(res) // nolint: errcheck
 	})
 
-	ctx := context.Background()
 	opts := ZoneListOpts{}
-	zones, _, err := env.Client.Zone.List(ctx, opts)
+	zones, _, err := env.Client.Zone.List(env.Context, opts)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}
@@ -49,7 +47,7 @@ func TestZoneList(t *testing.T) {
 	}
 
 	opts.Name = "hetzner.com"
-	zones, _, err = env.Client.Zone.List(ctx, opts)
+	zones, _, err = env.Client.Zone.List(env.Context, opts)
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}
@@ -75,16 +73,14 @@ func TestZoneGetByID(t *testing.T) {
 		})
 	})
 
-	ctx := context.Background()
-
 	id := "0"
-	_, resp, err := env.Client.Zone.GetByID(ctx, id)
+	_, resp, err := env.Client.Zone.GetByID(env.Context, id)
 	if as.EqInt(http.StatusNotFound, resp.StatusCode) {
 		as.Error(err)
 	}
 
 	id = "1"
-	zone, _, err := env.Client.Zone.GetByID(ctx, id)
+	zone, _, err := env.Client.Zone.GetByID(env.Context, id)
 	if as.NoError(err) && as.NotNil(zone) {
 		as.EqStr(id, zone.ID)
 	}
@@ -120,14 +116,12 @@ func TestZoneCreate(t *testing.T) {
 		json.NewEncoder(w).Encode(res) // nolint: errcheck
 	})
 
-	ctx := context.Background()
-
 	opts := ZoneCreateOpts{
 		Name: "",
 		Ttl:  nil,
 	}
 
-	_, _, err := env.Client.Zone.Create(ctx, opts)
+	_, _, err := env.Client.Zone.Create(env.Context, opts)
 	if err == nil {
 		t.Error("error expected but got nil")
 	}
@@ -136,7 +130,7 @@ func TestZoneCreate(t *testing.T) {
 	ttl := 86400
 	opts.Ttl = &ttl
 
-	zone, _, err := env.Client.Zone.Create(ctx, opts)
+	zone, _, err := env.Client.Zone.Create(env.Context, opts)
 	if err != nil {
 		t.Errorf("unexpected error: %s", err)
 	}
@@ -168,7 +162,6 @@ func TestZoneUpdate(t *testing.T) {
 		json.NewEncoder(w).Encode(resp) // nolint: errcheck
 	})
 
-	ctx := context.Background()
 	zone := &Zone{
 		ID: "0",
 	}
@@ -176,18 +169,18 @@ func TestZoneUpdate(t *testing.T) {
 		Name: "",
 	}
 
-	_, _, err := env.Client.Zone.Update(ctx, zone, opts)
+	_, _, err := env.Client.Zone.Update(env.Context, zone, opts)
 	as.EqStr("name required", err.Error())
 
 	opts.Name = "hetzner.com"
-	_, resp, err := env.Client.Zone.Update(ctx, zone, opts)
+	_, resp, err := env.Client.Zone.Update(env.Context, zone, opts)
 	if !as.EqInt(http.StatusNotFound, resp.StatusCode) {
 		as.NoError(err)
 	}
 
 	zone.ID = "1"
 
-	updatedZone, _, err := env.Client.Zone.Update(ctx, zone, opts)
+	updatedZone, _, err := env.Client.Zone.Update(env.Context, zone, opts)
 	as.NoError(err)
 	as.EqStr(zone.ID, updatedZone.ID)
 	as.EqStr(opts.Name, updatedZone.Name)
@@ -202,18 +195,17 @@ func TestZoneDelete(t *testing.T) {
 
 	env.Mux.HandleFunc(fmt.Sprintf("%s/1", pathZones), func(w http.ResponseWriter, r *http.Request) {})
 
-	ctx := context.Background()
 	zone := &Zone{
 		ID: "0",
 	}
 
-	resp, err := env.Client.Zone.Delete(ctx, zone)
+	resp, err := env.Client.Zone.Delete(env.Context, zone)
 	if !as.EqInt(http.StatusNotFound, resp.StatusCode) {
 		as.NoError(err)
 	}
 
 	zone.ID = "1"
-	_, err = env.Client.Zone.Delete(ctx, zone)
+	_, err = env.Client.Zone.Delete(env.Context, zone)
 	as.NoError(err)
 }
 
@@ -239,23 +231,22 @@ func TestZoneImport(t *testing.T) {
 		json.NewEncoder(w).Encode(respBody) // nolint: errcheck
 	})
 
-	ctx := context.Background()
 	file := bytes.NewBufferString("invalid syntax")
 	zone := &Zone{ID: "0"}
 
-	_, resp, err := env.Client.Zone.Import(ctx, zone, file)
+	_, resp, err := env.Client.Zone.Import(env.Context, zone, file)
 	if !as.EqInt(http.StatusNotFound, resp.StatusCode) {
 		as.NoError(err)
 	}
 
 	zone.ID = "1"
-	_, resp, err = env.Client.Zone.Import(ctx, zone, file)
+	_, resp, err = env.Client.Zone.Import(env.Context, zone, file)
 	if !as.EqInt(http.StatusUnprocessableEntity, resp.StatusCode) {
 		as.NoError(err)
 	}
 
 	file = bytes.NewBufferString("valid syntax")
-	newZone, _, err := env.Client.Zone.Import(ctx, zone, file)
+	newZone, _, err := env.Client.Zone.Import(env.Context, zone, file)
 	if as.NoError(err) {
 		as.EqStr(zone.ID, newZone.ID)
 	}
@@ -273,16 +264,15 @@ func TestZoneExport(t *testing.T) {
 		respBody.WriteTo(w) // nolint: errcheck
 	})
 
-	ctx := context.Background()
 	zone := &Zone{ID: "0"}
 
-	_, resp, err := env.Client.Zone.Export(ctx, zone)
+	_, resp, err := env.Client.Zone.Export(env.Context, zone)
 	if !as.EqInt(http.StatusNotFound, resp.StatusCode) {
 		as.NoError(err)
 	}
 
 	zone.ID = "1"
-	file, _, err := env.Client.Zone.Export(ctx, zone)
+	file, _, err := env.Client.Zone.Export(env.Context, zone)
 	if as.NoError(err) {
 		body := &bytes.Buffer{}
 		body.ReadFrom(file) // nolint: errcheck
@@ -320,15 +310,14 @@ func TestZoneValidate(t *testing.T) {
 		json.NewEncoder(w).Encode(respBody) // nolint: errcheck
 	})
 
-	ctx := context.Background()
 	file := bytes.NewBufferString("invalid syntax")
-	_, resp, err := env.Client.Zone.ValidateFile(ctx, file)
+	_, resp, err := env.Client.Zone.ValidateFile(env.Context, file)
 	if !as.EqInt(http.StatusUnprocessableEntity, resp.StatusCode) {
 		as.NoError(err)
 	}
 
 	file = bytes.NewBufferString("valid syntax")
-	val, _, err := env.Client.Zone.ValidateFile(ctx, file)
+	val, _, err := env.Client.Zone.ValidateFile(env.Context, file)
 	if as.NoError(err) {
 		as.EqInt(2, val.PassedRecords)
 		as.EqInt(2, len(val.ValidRecords))

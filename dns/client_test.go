@@ -10,9 +10,10 @@ import (
 )
 
 type testEnv struct {
-	Server *httptest.Server
-	Mux    *http.ServeMux
-	Client *Client
+	Server  *httptest.Server
+	Mux     *http.ServeMux
+	Client  *Client
+	Context context.Context
 }
 
 func (env *testEnv) Teardown() {
@@ -20,6 +21,8 @@ func (env *testEnv) Teardown() {
 	env.Server = nil
 	env.Mux = nil
 	env.Client = nil
+	env.Context.Done()
+	env.Context = nil
 }
 
 func newTestEnv() testEnv {
@@ -30,9 +33,10 @@ func newTestEnv() testEnv {
 		WithToken("32CharactersTokenxxxxxxxXxxxxxxx"),
 	)
 	return testEnv{
-		Server: server,
-		Mux:    mux,
-		Client: client,
+		Server:  server,
+		Mux:     mux,
+		Client:  client,
+		Context: context.Background(),
 	}
 }
 
