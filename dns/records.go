@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"time"
 
 	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
@@ -36,8 +35,8 @@ const (
 type Record struct {
 	Type     RecordType
 	ID       string
-	Created  time.Time
-	Modified time.Time
+	Created  schema.HdnsTime
+	Modified schema.HdnsTime
 	Zone     *Zone
 	Name     string
 	Value    string

@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"net/url"
-	"time"
 
 	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
@@ -24,8 +23,8 @@ const (
 // Zone represents a zone in Hetzner DNS.
 type Zone struct {
 	ID              string
-	Created         time.Time
-	Modified        time.Time
+	Created         schema.HdnsTime
+	Modified        schema.HdnsTime
 	LegacyDNSHost   string
 	LegacyNS        []string
 	Name            string
@@ -37,7 +36,7 @@ type Zone struct {
 	Registrar       string
 	Status          ZoneStatus
 	Ttl             int
-	Verified        time.Time
+	Verified        schema.HdnsTime
 	RecordsCount    int
 	IsSecondaryDNS  bool
 	TxtVerification *TxtVerification
