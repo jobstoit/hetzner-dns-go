@@ -21,7 +21,12 @@ func (ht *HdnsTime) UnmarshalJSON(b []byte) (err error) {
 
 	t, err := time.Parse(hdns_time_layout, s)
 	if err != nil {
-		return fmt.Errorf("Error while parsing date '%s' with time layout '%s': %s\n", s, hdns_time_layout, err)
+		t2, err2 := time.Parse(time.RFC3339, s)
+
+		if err2 != nil {
+			return fmt.Errorf("Error while parsing date '%s' with default rfc3339 time layout and '%s': %s\n", s, hdns_time_layout, err)
+		}
+		t = t2
 	}
 
 	*ht = HdnsTime(t)
