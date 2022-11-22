@@ -1,17 +1,15 @@
 package schema
 
-import "time"
-
 // Record represents a record in Hetzner DNS.
 type Record struct {
-	Type     string    `json:"type"`
-	ID       string    `json:"id"`
-	Created  time.Time `json:"created"`
-	Modified time.Time `json:"modified"`
-	ZoneID   string    `json:"zone_id"`
-	Name     string    `json:"name"`
-	Value    string    `json:"value"`
-	Ttl      int       `json:"ttl"`
+	Type     string   `json:"type"`
+	ID       string   `json:"id"`
+	Created  HdnsTime `json:"created"`
+	Modified HdnsTime `json:"modified"`
+	ZoneID   string   `json:"zone_id"`
+	Name     string   `json:"name"`
+	Value    string   `json:"value"`
+	Ttl      int      `json:"ttl"`
 }
 
 // RecordListResponse defines the schema of the response when

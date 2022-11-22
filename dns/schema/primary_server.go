@@ -1,15 +1,13 @@
 package schema
 
-import "time"
-
 // PrimaryServer represents a primary server in the Hetzner DNS API.
 type PrimaryServer struct {
-	ID       string    `json:"id"`
-	Port     int       `json:"port"`
-	Created  time.Time `json:"created"`
-	Modified time.Time `json:"modified"`
-	ZoneID   string    `json:"zone_id"`
-	Address  string    `json:"address"`
+	ID       string   `json:"id"`
+	Port     int      `json:"port"`
+	Created  HdnsTime `json:"created"`
+	Modified HdnsTime `json:"modified"`
+	ZoneID   string   `json:"zone_id"`
+	Address  string   `json:"address"`
 }
 
 // PrimaryServerListResponse defines the schema of the response when

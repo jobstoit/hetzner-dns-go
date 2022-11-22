@@ -90,8 +90,8 @@ func TestPrimaryServerCreate(t *testing.T) {
 		respBody.PrimaryServer = schema.PrimaryServer{
 			ID:       "1",
 			Port:     body.Port,
-			Created:  time.Now(),
-			Modified: time.Now(),
+			Created:  schema.HdnsTime(time.Now()),
+			Modified: schema.HdnsTime(time.Now()),
 			ZoneID:   body.ZoneID,
 			Address:  body.Address,
 		}
@@ -135,8 +135,8 @@ func TestPrimaryServerUpdate(t *testing.T) {
 		respBody.PrimaryServer = schema.PrimaryServer{
 			ID:       "1",
 			Port:     body.Port,
-			Created:  time.Now(),
-			Modified: time.Now(),
+			Created:  schema.HdnsTime(time.Now()),
+			Modified: schema.HdnsTime(time.Now()),
 			ZoneID:   body.ZoneID,
 			Address:  body.Address,
 		}

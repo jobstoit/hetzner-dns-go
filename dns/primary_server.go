@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"time"
 
 	"github.com/jobstoit/hetzner-dns-go/dns/schema"
 )
@@ -16,8 +15,8 @@ import (
 type PrimaryServer struct {
 	ID       string
 	Port     int
-	Created  time.Time
-	Modified time.Time
+	Created  schema.HdnsTime
+	Modified schema.HdnsTime
 	Zone     *Zone
 	Address  string
 }

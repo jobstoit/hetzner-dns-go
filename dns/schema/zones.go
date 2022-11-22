@@ -1,7 +1,5 @@
 package schema
 
-import "time"
-
 // ZoneListResponse defines the schema of the response when
 // listing zones.
 type ZoneListResponse struct {
@@ -17,8 +15,8 @@ type ZoneResponse struct {
 // Zone represents a zone in Hetzner DNS.
 type Zone struct {
 	ID              string          `json:"id"`
-	Created         time.Time       `json:"created"`
-	Modified        time.Time       `json:"modified"`
+	Created         HdnsTime        `json:"created"`
+	Modified        HdnsTime        `json:"modified"`
 	LegacyDNSHost   string          `json:"legacy_dns_host"`
 	LegacyNS        []string        `json:"legacy_ns"`
 	Name            string          `json:"name"`
@@ -30,7 +28,7 @@ type Zone struct {
 	Registrar       string          `json:"registrar"`
 	Status          string          `json:"status"`
 	Ttl             int             `json:"ttl"`
-	Verified        time.Time       `json:"verified"`
+	Verified        HdnsTime        `json:"verified"`
 	RecordsCount    int             `json:"records_count"`
 	IsSecondaryDNS  bool            `json:"is_secondary_dns"`
 	TxtVerification TxtVerification `json:"txt_verification"`
