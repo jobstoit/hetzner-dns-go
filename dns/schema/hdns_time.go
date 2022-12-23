@@ -9,6 +9,7 @@ import (
 // HdnsTime defines a wrapper for time.Time, to handle the DateTime format(s) used in HCloud DNS API...
 type HdnsTime time.Time
 
+// UnmarshalJSON is an implementation of encoding/json.Unmarshaler
 func (ht *HdnsTime) UnmarshalJSON(b []byte) error {
 
 	if len(b) == 0 || (len(b) == 2 && b[0] == 34 && b[1] == 34) {
@@ -39,9 +40,10 @@ func (ht *HdnsTime) UnmarshalJSON(b []byte) error {
 		return nil
 	}
 
-	return fmt.Errorf("Error while parsing date '%s'\n", s)
+	return fmt.Errorf("error while parsing date '%s'", s)
 }
 
+// MarshalJSON is an implementation of encoding/json.Marshaler
 func (ht HdnsTime) MarshalJSON() ([]byte, error) {
 	return time.Time(ht).MarshalJSON()
 }
