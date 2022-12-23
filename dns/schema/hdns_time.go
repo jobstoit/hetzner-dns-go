@@ -11,7 +11,7 @@ type HdnsTime time.Time
 
 func (ht *HdnsTime) UnmarshalJSON(b []byte) error {
 
-	if len(b) == 0 {
+	if len(b) == 0 || (len(b) == 2 && b[0] == 34 && b[1] == 34) {
 		*ht = HdnsTime{}
 		return nil
 	}
