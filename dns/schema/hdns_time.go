@@ -29,7 +29,7 @@ func (ht *HdnsTime) UnmarshalJSON(b []byte) error {
 	// [...] "verified": "2020-04-07 01:56:03.196438163 +0000 UTC m=+755.322810452", [...]
 	hdns_time_layout_2 := "2006-01-02 15:04:05.000000000 -0700 UTC" //... m=+755.322810452"
 
-	if t, err := time.Parse(hdns_time_layout_2, s); err == nil {
+	if t, err := time.Parse(hdns_time_layout_2, strings.Split(s, " m=+")[0]); err == nil {
 		*ht = HdnsTime(t)
 		return nil
 	}
