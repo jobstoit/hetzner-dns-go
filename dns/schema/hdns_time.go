@@ -11,17 +11,12 @@ type HdnsTime time.Time
 
 func (ht *HdnsTime) UnmarshalJSON(b []byte) error {
 
-	if len(b) == 0 {
+	if len(b) == 0 || (len(b) == 2 && b[0] == 34 && b[1] == 34) {
 		*ht = HdnsTime{}
 		return nil
 	}
 
 	s := strings.Trim(string(b), "\"")
-
-	if len(s) == 0 {
-		*ht = HdnsTime{}
-		return nil
-	}
 
 	hdns_time_layout_1 := "2006-01-02 15:04:05 -0700 UTC"
 
