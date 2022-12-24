@@ -6,6 +6,11 @@ func TestHdnsTimeUnmarshalJSON(t *testing.T) {
 	passUnmarshalTime(t, "2020-04-07 01:24:37 +0000 UTC")
 	passUnmarshalTime(t, "2020-04-07 01:56:03.196438163 +0000 UTC m=+755.322810452")
 	passUnmarshalTime(t, "2022-12-13 01:37:45.814 +0000 UTC")
+
+	// RFC3339
+	passUnmarshalTime(t, "2022-12-24T20:55:41Z")
+	// empty string in JSON style
+	passUnmarshalTime(t, "\"\"")
 	passUnmarshalTime(t, "")
 
 	failUnMarshalTime(t, "random text")
